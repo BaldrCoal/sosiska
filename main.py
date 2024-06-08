@@ -170,3 +170,4 @@ if __name__ == "__main__":
         print(f'Для остановки скрипта нажмите {exit_hotkey}')
         keyboard.wait(start_hotkey)
         run(exit_hotkey)
+    input()
