@@ -164,6 +164,7 @@ if __name__ == "__main__":
     pc_id = machineid.id()
     print(ascii)
     if check_token(token, pc_id, api_address):
-        print('Для запуска скрипта нажмите хоткей')
+        print(f'Для запуска скрипта нажмите {start_hotkey}')
+        print(f'Для остановки скрипта нажмите {exit_hotkey}')
         keyboard.wait(start_hotkey)
         run(exit_hotkey)
