@@ -117,7 +117,6 @@ def run(exit_hotkey):
     global is_running
     window_title = 'TelegramDesktop'
     locations = (0, 0)
-
     while not keyboard.is_pressed(exit_hotkey):
 
         screenshot = take_screenshot(window_title)
@@ -160,9 +159,11 @@ if __name__ == "__main__":
     config.read('conf.conf')
     token = config['DEFAULT']['Token']
     exit_hotkey = config['DEFAULT']['ExitHotkey']
+    start_hotkey = config['DEFAULT']['StartHotkey']
     api_address = 'https://timbyxty.ru'
     pc_id = machineid.id()
     print(ascii)
     if check_token(token, pc_id, api_address):
-        # run(exit_hotkey)
-        print(1)
+        print('Для запуска скрипта нажмите хоткей')
+        keyboard.wait(start_hotkey)
+        run(exit_hotkey)
