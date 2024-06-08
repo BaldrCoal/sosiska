@@ -111,6 +111,8 @@ def check_token(token, pc_id, api_address):
     else:
         if link_token(token, pc_id, api_address):
             return True
+        else:
+            print('0783 1505')
 
 
 def run(exit_hotkey):
