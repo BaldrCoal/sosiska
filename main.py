@@ -81,21 +81,21 @@ def click(x, y):
 
 
 def check_link(token, url):
-    result = requests.post(url, data={'token': token}).json()['result']
+    result = requests.get(f'{url}/check_link', data={'token': token}).json()['result']
     if result == 'true':
         return True
     return False
 
 
 def valid_check(token, pc_id, url):
-    result = requests.get(url, data={'token': token, 'pc_id': pc_id}).json()['result']
+    result = requests.get(f'{url}/valid_check', data={'token': token, 'pc_id': pc_id}).json()['result']
     if result == 'true':
         return True
     return False
 
 
 def link_token(token, pc_id, url):
-    result = requests.post(url, data={'token': token, 'pc_id': pc_id}).json()['result']
+    result = requests.post(f'{url}/link_token', data={'token': token, 'pc_id': pc_id}).json()['result']
     if result == 'true':
         return True
     return False
@@ -160,10 +160,9 @@ if __name__ == "__main__":
     config.read('conf.conf')
     token = config['DEFAULT']['Token']
     exit_hotkey = config['DEFAULT']['ExitHotkey']
-    api_address = 'localhost:8095'
+    api_address = 'https://timbyxty.ru'
     pc_id = machineid.id()
     print(ascii)
     if check_token(token, pc_id, api_address):
         # run(exit_hotkey)
         print(1)
-
