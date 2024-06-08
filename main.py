@@ -4,8 +4,13 @@ import pygetwindow as gw
 import pyautogui
 import keyboard
 import os
+import requests
+import configparser
+import machineid
+import time
 
 window_position = None
+
 
 def take_screenshot(window_title):
     global window_position
@@ -75,12 +80,45 @@ def click(x, y):
     pyautogui.click(x, y)
 
 
-def run():
+def check_link(token, url):
+    result = requests.post(url, data={'token': token}).json()['result']
+    if result == 'true':
+        return True
+    return False
+
+
+def valid_check(token, pc_id, url):
+    result = requests.get(url, data={'token': token, 'pc_id': pc_id}).json()['result']
+    if result == 'true':
+        return True
+    return False
+
+
+def link_token(token, pc_id, url):
+    result = requests.post(url, data={'token': token, 'pc_id': pc_id}).json()['result']
+    if result == 'true':
+        return True
+    return False
+
+
+def check_token(token, pc_id, api_address):
+    if check_link(token, api_address):
+        if valid_check(token, pc_id, api_address):
+            return True
+        else:
+            print('0783 1505')
+            return False
+    else:
+        if link_token(token, pc_id, api_address):
+            return True
+
+
+def run(exit_hotkey):
     global is_running
     window_title = 'TelegramDesktop'
     locations = (0, 0)
 
-    while not keyboard.is_pressed('e'):
+    while not keyboard.is_pressed(exit_hotkey):
 
         screenshot = take_screenshot(window_title)
 
@@ -98,9 +136,8 @@ def run():
             pass
 
 
-
 if __name__ == "__main__":
-   ascii = """
+    ascii = """
                          ______
  _________        .---"""      """---.
 :______.-':      :  .--------------.  :
@@ -119,5 +156,14 @@ if __name__ == "__main__":
                  .'.eeeeeeeeeeeeeeeeee.'.      :___:
                .'.eeeeeeeeeeeeeeeeeeeeee.'.
               :____________________________:"""
-   print(ascii)
-   run()
+    config = configparser.ConfigParser()
+    config.read('conf.conf')
+    token = config['DEFAULT']['Token']
+    exit_hotkey = config['DEFAULT']['ExitHotkey']
+    api_address = 'localhost:8095'
+    pc_id = machineid.id()
+    print(ascii)
+    if check_token(token, pc_id, api_address):
+        # run(exit_hotkey)
+        print(1)
+
